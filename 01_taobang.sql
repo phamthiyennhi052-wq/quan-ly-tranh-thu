@@ -60,6 +60,61 @@ MoiQuanHe nvarchar(10) null,
 DiaChi nvarchar(255) null,
 SDT nvarchar(20) not null,
 constraint fk_NguoiThan_QuanNhan foreign key (MaQN) references QuanNhan(MaQN));
+go
+create table VaiTro(
+MaVaiTro nvarchar(10) not null primary key,
+TenVaiTro nvarchar(20) not null,
+MoTa nvarchar(155) null);
+go
+create table NguoiDung(
+MaNguoiDung nvarchar(10) not null primary key,
+MaQN nvarchar (10) not null,
+MaVaiTro nvarchar(10) not null,
+TenDangNhap nvarchar(50) not null,
+MatKhau nvarchar(255) not null,
+TrangThai nvarchar(20) not null default N'Hoạt động',
+constraint uq_NguoiDung_MaQN unique (MaQN),
+constraint uq_NguoiDung_TenDangNhap unique (TenDangNhap),
+constraint fk_NguoiDung_QuanNhan foreign key (MaQN) references QuanNhan (MaQN),
+constraint fk_NGuoiDung_VaiTro foreign key (MaVaiTro) references VaiTro(MaVaiTro),
+constraint ck_NguoiDung_TrangThai check (TrangThai in(N'Hoạt động',N'Khóa')));
+go
+create table LichSuHeThong(
+MaLichSu bigint not null identity(1,1) primary key,
+MaNguoiDung nvarchar(10) not null,
+ThoiGian datetime2 not null default sysdatetime(),
+HanhDong nvarchar(255) not null,
+DiaChiIP nvarchar(50) null,
+constraint fk_LichSuHeThong_NguoiDung foreign key (MaNguoiDung) references NguoiDung(MaNguoiDung));
+go
+create table LoaiPhep(
+MaLoaiPhep nvarchar(10) not null primary key,
+TenLoaiPhep nvarchar(50) not null,
+SoNgayToiDa int not null,
+MoTa nvarchar(255) null,
+constraint ck_LoaiPhep_SoNgay check(SoNgayToiDa>0));
+go
+create table DonTranhThu(
+MaDon nvarchar(10) not null primary key,
+MaQN nvarchar(10) not null,
+MaLoaiPhep nvarchar(10) not null,
+NgayLamDon datetime2 not null default sysdatetime(),
+LyDo nvarchar(255) not null,
+NgayBatDau date not null,
+NgayKetThuc date not null,
+NoiDen nvarchar(255) not null,
+DiaChiChiTiet nvarchar(255) not null,
+TrangThai nvarchar(20) not null default N'Chờ duyệt',
+constraint fk_DonTranhThu_QuanNhan foreign key (MaQN) references QuanNhan(MaQN),
+constraint fk_DonTranhThu_LoaiPhep foreign key (MaLoaiPhep) references LoaiPhep(MaLoaiPhep),
+constraint ck_DonTranhThu_NgayHopLe check (NgayKetThuc>=NgayBatDau),
+constraint ck_DonTranhThu_TrangThai check (TrangThai in (N'Chờ duyệt', N'Đã duyệt',N'Từ chối',N'Đang tranh thủ', N'Đã về')));
+
+
+
+
+
+
 
 
 
