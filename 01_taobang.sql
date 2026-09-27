@@ -10,8 +10,8 @@ go
 create table DonVi(
 MaDV varchar(10) not null primary key,
 TenDV nvarchar(50) not null,
-MaCapDV nvarchar(10) not null,
-MaDVCha nvarchar(10) null,
+MaCapDV varchar(10) not null,
+MaDVCha varchar(10) null,
 CONSTRAINT FK_DonVi_CapDonVi FOREIGN KEY (MaCapDV) REFERENCES CapDonVi(MaCapDV),
 CONSTRAINT FK_DonVi_DonViCha FOREIGN KEY (MaDVCha) REFERENCES DonVi(MaDV)
 );
