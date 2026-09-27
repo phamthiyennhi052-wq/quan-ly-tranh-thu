@@ -138,6 +138,9 @@ CREATE INDEX IDX_DonTranhThu_TrangThai  ON DonTranhThu(TrangThai);
 CREATE INDEX IDX_PheDuyet_MaDon         ON PheDuyet(MaDon);
 CREATE INDEX IDX_LichSuHeThong_ThoiGian ON LichSuHeThong(ThoiGian);
 GO
+create table phucngu(
+phucngu varchar(10) not null  primary key,
+phucratngu varchar(10) null);
 
 
 
