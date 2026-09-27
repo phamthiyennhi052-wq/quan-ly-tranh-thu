@@ -109,6 +109,35 @@ constraint fk_DonTranhThu_QuanNhan foreign key (MaQN) references QuanNhan(MaQN),
 constraint fk_DonTranhThu_LoaiPhep foreign key (MaLoaiPhep) references LoaiPhep(MaLoaiPhep),
 constraint ck_DonTranhThu_NgayHopLe check (NgayKetThuc>=NgayBatDau),
 constraint ck_DonTranhThu_TrangThai check (TrangThai in (N'Chờ duyệt', N'Đã duyệt',N'Từ chối',N'Đang tranh thủ', N'Đã về')));
+go
+create table PheDuyet(
+MaPD nvarchar(10) not null primary key,
+MaDon nvarchar(10) not null,
+MaNguoiDuyet nvarchar(10) not null,
+CapDuyet nvarchar(50) not null,
+KetQua nvarchar(10) not null,
+NoiDung nvarchar(255) null,
+constraint fk_PheDuyet_DonTranhThu foreign key (MaDon) references DonTranhThu (MaDon),
+constraint fk_PheDuyet_NguoiDung foreign key (MaNguoiDuyet) references NguoiDung(MaNguoiDung),
+constraint ck_PheDuyet_KetQua check (KetQua in (N'Chấp nhận', N'Từ chối')));
+go
+create table LichSuTranhThu(
+MaLS nvarchar(10) not null primary key,
+MaDon nvarchar(10) not null,
+ThoiGianDi datetime2 null,
+ThoiGianVe datetime2 null,
+TrangThai nvarchar(20) null,
+GhiChu nvarchar(255) null,
+constraint fk_LichSuTranhThu_DonTranhThu foreign key (MaDon) references DonTranhThu(MaDon),
+constraint ck_LichSuTranhThu_ThoiGian check(ThoiGianVe is null or ThoiGianVe >= ThoiGianDi),
+constraint ck_LichSuTranhThu_TrangThai check(TrangThai is null or TrangThai in (N'Đúng hạn',N'Trễ hạn', N'Chưa về')));
+go
+CREATE INDEX IDX_QuanNhan_DonVi         ON QuanNhan(MaDV);
+CREATE INDEX IDX_DonTranhThu_QuanNhan   ON DonTranhThu(MaQN);
+CREATE INDEX IDX_DonTranhThu_TrangThai  ON DonTranhThu(TrangThai);
+CREATE INDEX IDX_PheDuyet_MaDon         ON PheDuyet(MaDon);
+CREATE INDEX IDX_LichSuHeThong_ThoiGian ON LichSuHeThong(ThoiGian);
+GO
 
 
 
