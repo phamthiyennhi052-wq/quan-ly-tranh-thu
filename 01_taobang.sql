@@ -17,28 +17,28 @@ CONSTRAINT FK_DonVi_DonViCha FOREIGN KEY (MaDVCha) REFERENCES DonVi(MaDV)
 );
 go
 create table CapBac(
-MaCB nvarchar(10) not null primary key,
+MaCB varchar(10) not null primary key,
 TenCB nvarchar(50) not null,
 ThuTu int not null,
 constraint UQ_CapBac_ThuTu unique (ThuTu));
 go
 create table DoiTuong(
-MaDT nvarchar(10) not null primary key,
+MaDT varchar(10) not null primary key,
 TenDT nvarchar(50) not null,
 MoTa nvarchar(255) null);
 go
 create table ChucVu(
-MaCV nvarchar(10) not null primary key,
+MaCV varchar(10) not null primary key,
 TenCV nvarchar(20) not null);
 go
 create table QuanNhan(
-MaQN nvarchar(10) not null primary key,
+MaQN varchar(10) not null primary key,
 HoTen nvarchar(50) not null,
 NgaySinh date not null,
 GioiTinh nvarchar(5) not null,
 QueQuan nvarchar(255) not null,
 NgayNhapNgu date not null,
-SDT nvarchar(20) not null,
+SDT varchar(20) not null,
 TinhTrang nvarchar(20) not null default N'Tạo ngũ',
 MaDV varchar(10) not null,
 MaCB varchar(10) not null,
@@ -55,23 +55,23 @@ go
 create table NguoiThan(
 MaNT varchar(10) not null primary key,
 MaQN varchar(10) not null,
-HoTen varchar(100) not null,
+HoTen nvarchar(100) not null,
 MoiQuanHe nvarchar(10) null,
 DiaChi nvarchar(255) null,
-SDT nvarchar(20) not null,
+SDT varchar(20) not null,
 constraint fk_NguoiThan_QuanNhan foreign key (MaQN) references QuanNhan(MaQN));
 go
 create table VaiTro(
-MaVaiTro nvarchar(10) not null primary key,
+MaVaiTro varchar(10) not null primary key,
 TenVaiTro nvarchar(20) not null,
 MoTa nvarchar(155) null);
 go
 create table NguoiDung(
-MaNguoiDung nvarchar(10) not null primary key,
-MaQN nvarchar (10) not null,
-MaVaiTro nvarchar(10) not null,
+MaNguoiDung varchar(10) not null primary key,
+MaQN varchar (10) not null,
+MaVaiTro varchar(10) not null,
 TenDangNhap nvarchar(50) not null,
-MatKhau nvarchar(255) not null,
+MatKhau varchar(255) not null,
 TrangThai nvarchar(20) not null default N'Hoạt động',
 constraint uq_NguoiDung_MaQN unique (MaQN),
 constraint uq_NguoiDung_TenDangNhap unique (TenDangNhap),
@@ -81,23 +81,23 @@ constraint ck_NguoiDung_TrangThai check (TrangThai in(N'Hoạt động',N'Khóa'
 go
 create table LichSuHeThong(
 MaLichSu bigint not null identity(1,1) primary key,
-MaNguoiDung nvarchar(10) not null,
+MaNguoiDung varchar(10) not null,
 ThoiGian datetime2 not null default sysdatetime(),
 HanhDong nvarchar(255) not null,
-DiaChiIP nvarchar(50) null,
+DiaChiIP varchar(50) null,
 constraint fk_LichSuHeThong_NguoiDung foreign key (MaNguoiDung) references NguoiDung(MaNguoiDung));
 go
 create table LoaiPhep(
-MaLoaiPhep nvarchar(10) not null primary key,
+MaLoaiPhep varchar(10) not null primary key,
 TenLoaiPhep nvarchar(50) not null,
 SoNgayToiDa int not null,
 MoTa nvarchar(255) null,
 constraint ck_LoaiPhep_SoNgay check(SoNgayToiDa>0));
 go
 create table DonTranhThu(
-MaDon nvarchar(10) not null primary key,
-MaQN nvarchar(10) not null,
-MaLoaiPhep nvarchar(10) not null,
+MaDon varchar(10) not null primary key,
+MaQN varchar(10) not null,
+MaLoaiPhep varchar(10) not null,
 NgayLamDon datetime2 not null default sysdatetime(),
 LyDo nvarchar(255) not null,
 NgayBatDau date not null,
@@ -111,9 +111,9 @@ constraint ck_DonTranhThu_NgayHopLe check (NgayKetThuc>=NgayBatDau),
 constraint ck_DonTranhThu_TrangThai check (TrangThai in (N'Chờ duyệt', N'Đã duyệt',N'Từ chối',N'Đang tranh thủ', N'Đã về')));
 go
 create table PheDuyet(
-MaPD nvarchar(10) not null primary key,
-MaDon nvarchar(10) not null,
-MaNguoiDuyet nvarchar(10) not null,
+MaPD varchar(10) not null primary key,
+MaDon varchar(10) not null,
+MaNguoiDuyet varchar(10) not null,
 CapDuyet nvarchar(50) not null,
 KetQua nvarchar(10) not null,
 NoiDung nvarchar(255) null,
@@ -122,8 +122,8 @@ constraint fk_PheDuyet_NguoiDung foreign key (MaNguoiDuyet) references NguoiDung
 constraint ck_PheDuyet_KetQua check (KetQua in (N'Chấp nhận', N'Từ chối')));
 go
 create table LichSuTranhThu(
-MaLS nvarchar(10) not null primary key,
-MaDon nvarchar(10) not null,
+MaLS varchar(10) not null primary key,
+MaDon varchar(10) not null,
 ThoiGianDi datetime2 null,
 ThoiGianVe datetime2 null,
 TrangThai nvarchar(20) null,
