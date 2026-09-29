@@ -117,6 +117,7 @@ MaNguoiDuyet varchar(10) not null,
 CapDuyet nvarchar(50) not null,
 KetQua nvarchar(10) not null,
 NoiDung nvarchar(255) null,
+NgayPheDuyet datetime2 not null default sysdatetime()
 constraint fk_PheDuyet_DonTranhThu foreign key (MaDon) references DonTranhThu (MaDon),
 constraint fk_PheDuyet_NguoiDung foreign key (MaNguoiDuyet) references NguoiDung(MaNguoiDung),
 constraint ck_PheDuyet_KetQua check (KetQua in (N'Chấp nhận', N'Từ chối')));
@@ -131,6 +132,18 @@ GhiChu nvarchar(255) null,
 constraint fk_LichSuTranhThu_DonTranhThu foreign key (MaDon) references DonTranhThu(MaDon),
 constraint ck_LichSuTranhThu_ThoiGian check(ThoiGianVe is null or ThoiGianVe >= ThoiGianDi),
 constraint ck_LichSuTranhThu_TrangThai check(TrangThai is null or TrangThai in (N'Đúng hạn',N'Trễ hạn', N'Chưa về')));
+use Quan_ly_tranh_thu;
+go
+
+create table ThongBao(
+MaTB varchar(10) not null primary key,
+MaNguoiDung varchar(10) not null,
+NoiDung nvarchar(255) not null,
+ThoiGian datetime2 not null default sysdatetime(),
+DaDoc bit not null default 0,
+constraint fk_ThongBao_NguoiDung foreign key (MaNguoiDung) references NguoiDung(MaNguoiDung));
+go
+CREATE INDEX IDX_ThongBao_NguoiDung_DaDoc ON ThongBao(MaNguoiDung, DaDoc);
 go
 CREATE INDEX IDX_QuanNhan_DonVi         ON QuanNhan(MaDV);
 CREATE INDEX IDX_DonTranhThu_QuanNhan   ON DonTranhThu(MaQN);
